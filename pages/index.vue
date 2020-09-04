@@ -37,7 +37,25 @@
             :loading="deleteNameLoading"
           >delete name</v-btn>
         </div>
+        <div class="my-3">
+          <h3>Access to data with REST API</h3>
+          <v-btn
+            @click="resolve"
+            :disabled="aliceWallet.address === '' || jackWallet.address === ''"
+          >resolve</v-btn>
+          <v-btn
+            @click="whois"
+            :disabled="aliceWallet.address === '' || jackWallet.address === ''"
+          >whois</v-btn>
+          <v-btn
+            @click="getNames"
+            :disabled="aliceWallet.address === '' || jackWallet.address === ''"
+          >names</v-btn>
+        </div>
       </v-form>
+      <div class="my-3">
+        <p v-for="log in logs" :key="log">{{ log }}</p>
+      </div>
       <v-card class="my-4" v-if="aliceWallet.address !== ''">
         <v-card-title>Alice's wallet</v-card-title>
         <v-card-text>
@@ -132,7 +150,8 @@ export default {
         walletProvider: new LocalWalletProvider('cosmos', 'a'),
         rpc: 'http://localhost:26657',
         rest: 'http://localhost:1317'
-      })
+      }),
+      logs: Array<string>()
     }
   },
   methods: {
@@ -301,6 +320,33 @@ export default {
         'commit'
       )
       this.deleteNameLoading = false
+
+      return Promise.resolve()
+    },
+    resolve: async function(): Promise<void> {
+      const aliceApi = this.aliceApi
+      const aliceRest = new CustomRest(aliceApi.context)
+      const result = await aliceRest.resolveName('jack1.id')
+      this.logs.push(result)
+      console.log(result)
+
+      return Promise.resolve()
+    },
+    whois: async function(): Promise<void> {
+      const aliceApi = this.aliceApi
+      const aliceRest = new CustomRest(aliceApi.context)
+      const result = await aliceRest.whois('jack1.id')
+      this.logs.push(result)
+      console.log(result)
+
+      return Promise.resolve()
+    },
+    getNames: async function(): Promise<void> {
+      const aliceApi = this.aliceApi
+      const aliceRest = new CustomRest(aliceApi.context)
+      const result = await aliceRest.getNames()
+      this.logs.push(result)
+      console.log(result)
 
       return Promise.resolve()
     }
