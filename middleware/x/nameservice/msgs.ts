@@ -1,16 +1,8 @@
-import { Amino, Type, Codec } from '@node-a-team/ts-amino'
-const { Field, Concrete, DefineStruct } = Amino
+import { Amino, Type } from '@node-a-team/ts-amino'
+const { Field, DefineStruct } = Amino
 import { Msg } from '@chainapsis/cosmosjs/core/tx'
 import { AccAddress } from '@chainapsis/cosmosjs/common/address'
 import { Coin } from '@chainapsis/cosmosjs/common/coin'
-
-import { sortJSON } from '@chainapsis/cosmosjs/utils/sortJson'
-
-import { getTypeInfo } from '@node-a-team/ts-amino/dist/util'
-import { encodeReflectJSON } from '@node-a-team/ts-amino/dist/json-encode'
-import { defaultFieldOptions } from '@node-a-team/ts-amino/dist/options'
-import { Symbols } from '@node-a-team/ts-amino/dist/type'
-import { Int } from '@chainapsis/cosmosjs/common/int'
 
 @DefineStruct()
 export class MsgSetName extends Msg {
